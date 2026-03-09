@@ -21,7 +21,7 @@ Flutter 桌面悬浮歌词插件。
 - Windows：已支持
 - Linux：已支持
   - Wayland：由于技术原因，暂不支持点击穿透。
-- macOS：暂未实现（调用会安全返回）
+- macOS：已支持
 
 ## 快速开始
 
