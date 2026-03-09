@@ -1,3 +1,9 @@
+## 0.0.6
+
+* Added macOS native implementation with AppKit overlay window support.
+* Added macOS example host project and XCTest coverage.
+* Added an extra Windows native unit test for `updateLyricFrame`.
+
 ## 0.0.5
 
 * Refactored `DesktopLyrics` to default to a shared singleton instance.
