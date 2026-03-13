@@ -1,3 +1,13 @@
+## 0.0.7
+
+* Split core Dart models and controller code into focused source files.
+* Split Windows and Linux native rendering into dedicated renderer and resource units.
+* Fixed Windows CMake after the native source split.
+* Fixed desktop lyrics slider state sync and background opacity rendering.
+* Centered desktop lyrics text by default and fixed default alignment behavior.
+* Fixed macOS opacity clamping to allow fully transparent values.
+* Resolved Linux overlay build warnings.
+
 ## 0.0.6
 
 * Added macOS native implementation with AppKit overlay window support.
