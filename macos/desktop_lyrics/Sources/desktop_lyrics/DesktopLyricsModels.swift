@@ -27,7 +27,7 @@ struct DesktopLyricsOverlayConfig: Equatable {
   var overlayWidth = 980.0
   var overlayHeight = -1.0
   var fontFamily = "Segoe UI"
-  var textAlign = 0
+  var textAlign = 1
   var fontWeightValue = 400
 
   init(arguments: [String: Any]? = nil) {
@@ -35,7 +35,7 @@ struct DesktopLyricsOverlayConfig: Equatable {
     enabled = Self.readBool(arguments["enabled"], fallback: enabled)
     clickThrough = Self.readBool(arguments["clickThrough"], fallback: clickThrough)
     fontSize = Self.clamp(Self.readDouble(arguments["fontSize"], fallback: fontSize), min: 20.0, max: 72.0)
-    opacity = Self.clamp(Self.readDouble(arguments["opacity"], fallback: opacity), min: 0.25, max: 1.0)
+    opacity = Self.clamp(Self.readDouble(arguments["opacity"], fallback: opacity), min: 0.0, max: 1.0)
     textArgb = Self.readUInt32(arguments["textColorArgb"], fallback: textArgb)
     shadowArgb = Self.readUInt32(arguments["shadowColorArgb"], fallback: shadowArgb)
     strokeArgb = Self.readUInt32(arguments["strokeColorArgb"], fallback: strokeArgb)
