@@ -110,10 +110,22 @@ class _DesktopLyricsDemoPageState extends State<_DesktopLyricsDemoPage> {
     }
     setState(() => _playingTokenDemo = true);
     const List<DesktopLyricsTokenTiming> tokens = <DesktopLyricsTokenTiming>[
-      DesktopLyricsTokenTiming(text: 'Karaoke ', duration: Duration(milliseconds: 260)),
-      DesktopLyricsTokenTiming(text: 'tokens ', duration: Duration(milliseconds: 260)),
-      DesktopLyricsTokenTiming(text: 'in ', duration: Duration(milliseconds: 220)),
-      DesktopLyricsTokenTiming(text: 'progress', duration: Duration(milliseconds: 320)),
+      DesktopLyricsTokenTiming(
+        text: 'Karaoke ',
+        duration: Duration(milliseconds: 260),
+      ),
+      DesktopLyricsTokenTiming(
+        text: 'tokens ',
+        duration: Duration(milliseconds: 260),
+      ),
+      DesktopLyricsTokenTiming(
+        text: 'in ',
+        duration: Duration(milliseconds: 220),
+      ),
+      DesktopLyricsTokenTiming(
+        text: 'progress',
+        duration: Duration(milliseconds: 320),
+      ),
     ];
     try {
       for (int i = 0; i <= 8; i++) {
