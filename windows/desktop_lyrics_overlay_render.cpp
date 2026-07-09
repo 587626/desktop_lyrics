@@ -113,6 +113,42 @@ void DesktopLyricsOverlay::RenderLayeredWindow() {
     }
 
     const bool has_progress = has_frame_ && frame_line_progress_ < 0.999;
+    // 文本在 text_rect 内按 textAlign 居中/对齐，实际只占中间一段，而
+    // text_rect 撑满整个窗口宽度。若 progress clip 直接按 text_rect 宽度 ×
+    // lineProgress 扩展，分界会与文本实际左右缘错位：lineProgress 还没到 1.0
+    // 时 clip 右缘已越过文本右缘 -> 提前全亮（"还没唱完就滚完"）。这里先度量
+    // 当前行的实际宽度，把 clip 收窄到文本实际范围内按 lineProgress 扩展，
+    // 使分界精确贴合人声进度。
+    float text_left = text_rect.left;
+    float text_right = text_rect.right;
+    if (has_progress && dwrite_factory_ && measure_text_format_) {
+      const float layout_width = (std::max)(
+          text_rect.right - text_rect.left, 1.0f);
+      Microsoft::WRL::ComPtr<IDWriteTextLayout> layout;
+      if (SUCCEEDED(dwrite_factory_->CreateTextLayout(
+              current_line_.c_str(),
+              static_cast<UINT32>(current_line_.size()),
+              measure_text_format_.Get(), layout_width, 2048.0f, &layout)) &&
+          layout) {
+        DWRITE_TEXT_METRICS metrics{};
+        if (SUCCEEDED(layout->GetMetrics(&metrics)) && metrics.width > 0.0f) {
+          const float text_w = metrics.width;
+          const float avail = text_rect.right - text_rect.left;
+          switch (text_align_) {
+            case 1:  // center
+              text_left = text_rect.left + (avail - text_w) * 0.5f;
+              break;
+            case 2:  // right / trailing
+              text_left = text_rect.left + (avail - text_w);
+              break;
+            default:  // left / leading
+              text_left = text_rect.left;
+              break;
+          }
+          text_right = text_left + text_w;
+        }
+      }
+    }
     if (has_progress) {
       uint32_t base_argb =
           text_gradient_enabled_ ? text_gradient_start_argb_ : text_argb_;
@@ -129,10 +165,9 @@ void DesktopLyricsOverlay::RenderLayeredWindow() {
             D2D1_DRAW_TEXT_OPTIONS_CLIP);
       }
       const D2D1_RECT_F progress_clip = D2D1::RectF(
-          text_rect.left, text_rect.top,
-          text_rect.left +
-              (text_rect.right - text_rect.left) *
-                  static_cast<float>(frame_line_progress_),
+          text_left, text_rect.top,
+          text_left + (text_right - text_left) *
+                          static_cast<float>(frame_line_progress_),
           text_rect.bottom);
       render_target_->PushAxisAlignedClip(progress_clip,
                                           D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
