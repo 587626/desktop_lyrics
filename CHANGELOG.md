@@ -1,3 +1,7 @@
+## 0.0.8
+
+* Fixed Windows karaoke progress clip alignment: the highlight clip was sized against the full overlay text rect, but centered/aligned text only occupies part of it, so the line lit up fully before `lineProgress` reached 1.0. The clip is now narrowed to the measured text bounds (via `IDWriteTextLayout`), so the sweep boundary tracks the vocal precisely.
+
 ## 0.0.7
 
 * Split core Dart models and controller code into focused source files.
